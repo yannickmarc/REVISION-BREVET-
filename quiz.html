@@ -422,9 +422,16 @@
         }
 
         function selectOption(index, element) {
-            if (selectedAnswer !== null) return;
+            // Permettre de changer de réponse avant validation
+            const options = document.querySelectorAll('.option');
             
-            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            // Si une réponse a déjà été validée, ne pas permettre de changer
+            if (options[0].classList.contains('correct') || options[0].classList.contains('incorrect')) {
+                return;
+            }
+            
+            // Enlever la sélection précédente et sélectionner la nouvelle
+            options.forEach(opt => opt.classList.remove('selected'));
             element.classList.add('selected');
             selectedAnswer = index;
         }
