@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sciences - Révision Brevet</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.4); }
+        .title {
+            color: white;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .score-display {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        .progress {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress-fill {
+            background: white;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        .progress-text {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .question-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .question-title {
+            color: white;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        .option {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .option:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(5px);
+        }
+        .option.selected {
+            background: rgba(255, 255, 255, 0.35);
+            border-color: white;
+        }
+        .option.correct {
+            background: rgba(76, 175, 80, 0.4);
+            border-color: #4CAF50;
+        }
+        .option.incorrect {
+            background: rgba(244, 67, 54, 0.4);
+            border-color: #F44336;
+        }
+        .option-letter {
+            background: rgba(255, 255, 255, 0.3);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .explanation {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .explanation-title {
+            color: white;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation-text {
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.6;
+        }
+        .btn {
+            background: white;
+            color: #333;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .results {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 50px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .results h2 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .results .score {
+            font-size: 5em;
+            color: white;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .results p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn">← Retour</a>
+            <div class="title">
+                <span>🧪</span>
+                <span>Sciences</span>
+            </div>
+            <div class="score-display" id="score">0 pts</div>
+        </div>
+
+        <div id="quiz-container">
+            <div class="progress">
+                <div class="progress-text">
+                    <span id="current-q">1</span> / <span id="total-q">10</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 10%"></div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <h2 class="question-title" id="question-text"></h2>
+                <div id="options-container"></div>
+                <div id="explanation-container"></div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn" id="validate-btn" onclick="validateAnswer()">Valider</button>
+                <button class="btn hidden" id="next-btn" onclick="nextQuestion()">Question suivante →</button>
+            </div>
+        </div>
+
+        <div id="results-container" class="results hidden">
+            <h2>🎊 Quiz terminé !</h2>
+            <div class="score" id="final-score">0/10</div>
+            <p id="result-message"></p>
+            <div class="btn-container" style="justify-content: center;">
+                <button class="btn" onclick="location.reload()">🔀 Nouvelles questions</button>
+                <a href="index.html" class="btn" style="text-decoration: none; display: inline-block;">Changer de matière</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [{"q": "Chromosomes dans une cellule humaine", "o": ["23", "46", "92", "48"], "c": 1, "e": "46 chromosomes (23 paires)."}, {"q": "Processus de fabrication de nourriture par les plantes", "o": ["Respiration", "Photosynthèse", "Digestion", "Fermentation"], "c": 1, "e": "La photosynthèse."}, {"q": "Unité de base du vivant", "o": ["Atome", "Molécule", "Cellule", "Organe"], "c": 2, "e": "La cellule."}, {"q": "Nombre d'os chez l'adulte", "o": ["156", "186", "206", "256"], "c": 2, "e": "206 os."}, {"q": "Organe produisant l'insuline", "o": ["Foie", "Pancréas", "Estomac", "Reins"], "c": 1, "e": "Le pancréas."}, {"q": "Support de l'information génétique", "o": ["ARN", "ADN", "ATP", "ADP"], "c": 1, "e": "L'ADN."}, {"q": "Formule chimique de l'eau", "o": ["H2O", "CO2", "O2", "H2O2"], "c": 0, "e": "H2O = 2H + 1O"}, {"q": "Formule du dioxyde de carbone", "o": ["CO", "CO2", "O2", "C2O"], "c": 1, "e": "CO2"}, {"q": "Passage de liquide à gaz", "o": ["Fusion", "Solidification", "Vaporisation", "Sublimation"], "c": 2, "e": "La vaporisation."}, {"q": "Température d'ébullition de l'eau", "o": ["0°C", "50°C", "100°C", "150°C"], "c": 2, "e": "100°C au niveau de la mer."}, {"q": "Gaz indispensable à la respiration", "o": ["Azote", "Oxygène", "CO2", "Hydrogène"], "c": 1, "e": "L'oxygène (O2)."}, {"q": "Qu'est-ce qu'un atome ?", "o": ["Molécule", "Plus petite partie d'un élément", "Ion", "Électron"], "c": 1, "e": "L'atome = plus petite partie d'un élément."}, {"q": "Que mesure un voltmètre ?", "o": ["Intensité", "Tension", "Résistance", "Puissance"], "c": 1, "e": "Le voltmètre mesure la tension."}, {"q": "Unité de l'intensité électrique", "o": ["Volt", "Ampère", "Watt", "Ohm"], "c": 1, "e": "L'ampère (A)."}, {"q": "Vitesse de la lumière", "o": ["300 km/s", "3000 km/s", "30000 km/s", "300000 km/s"], "c": 3, "e": "300 000 km/s."}];
+
+        let selectedQuestions = [];
+        let currentIndex = 0;
+        let selectedAnswer = null;
+        let score = 0;
+        let correctCount = 0;
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function init() {
+            selectedQuestions = shuffle([...questions]).slice(0, 10);
+            loadQuestion();
+            updateScore();
+        }
+
+        function loadQuestion() {
+            const q = selectedQuestions[currentIndex];
+            document.getElementById('question-text').textContent = q.q;
+            document.getElementById('current-q').textContent = currentIndex + 1;
+            document.getElementById('progress-fill').style.width = ((currentIndex + 1) / 10 * 100) + '%';
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.o.forEach((option, i) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + i)}</div>
+                    <div>${option}</div>
+                `;
+                div.onclick = () => selectOption(i, div);
+                container.appendChild(div);
+            });
+            
+            document.getElementById('explanation-container').innerHTML = '';
+            document.getElementById('validate-btn').classList.remove('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+            selectedAnswer = null;
+        }
+
+        function selectOption(index, element) {
+            if (selectedAnswer !== null) return;
+            
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswer = index;
+        }
+
+        function validateAnswer() {
+            if (selectedAnswer === null) {
+                alert('Sélectionne une réponse !');
+                return;
+            }
+            
+            const q = selectedQuestions[currentIndex];
+            const options = document.querySelectorAll('.option');
+            const isCorrect = selectedAnswer === q.c;
+            
+            options[q.c].classList.add('correct');
+            if (!isCorrect) {
+                options[selectedAnswer].classList.add('incorrect');
+            } else {
+                score += 10;
+                correctCount++;
+                updateScore();
+            }
+            
+            const expContainer = document.getElementById('explanation-container');
+            expContainer.innerHTML = `
+                <div class="explanation">
+                    <div class="explanation-title">
+                        <span>${isCorrect ? '🎉 Bravo !' : '💡 Pas tout à fait...'}</span>
+                    </div>
+                    <div class="explanation-text">${q.e}</div>
+                </div>
+            `;
+            
+            document.getElementById('validate-btn').classList.add('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIndex < 9) {
+                currentIndex++;
+                selectedAnswer = null;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+            
+            document.getElementById('final-score').textContent = correctCount + '/10';
+            
+            const messages = [
+                { min: 10, msg: 'Parfait ! 🌟' },
+                { min: 7, msg: 'Très bien ! 👏' },
+                { min: 5, msg: 'Pas mal ! 👍' },
+                { min: 0, msg: 'Continue à t\'entraîner ! 💪' }
+            ];
+            
+            const message = messages.find(m => correctCount >= m.min).msg;
+            document.getElementById('result-message').textContent = message + ` Tu as gagné ${score} points !`;
+            
+            const totalScore = parseInt(localStorage.getItem('totalScore') || '0');
+            localStorage.setItem('totalScore', totalScore + score);
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score + ' pts';
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMC - Révision Brevet</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.4); }
+        .title {
+            color: white;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .score-display {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        .progress {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress-fill {
+            background: white;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        .progress-text {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .question-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .question-title {
+            color: white;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        .option {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .option:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(5px);
+        }
+        .option.selected {
+            background: rgba(255, 255, 255, 0.35);
+            border-color: white;
+        }
+        .option.correct {
+            background: rgba(76, 175, 80, 0.4);
+            border-color: #4CAF50;
+        }
+        .option.incorrect {
+            background: rgba(244, 67, 54, 0.4);
+            border-color: #F44336;
+        }
+        .option-letter {
+            background: rgba(255, 255, 255, 0.3);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .explanation {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .explanation-title {
+            color: white;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation-text {
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.6;
+        }
+        .btn {
+            background: white;
+            color: #333;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .results {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 50px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .results h2 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .results .score {
+            font-size: 5em;
+            color: white;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .results p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn">← Retour</a>
+            <div class="title">
+                <span>🧠</span>
+                <span>EMC</span>
+            </div>
+            <div class="score-display" id="score">0 pts</div>
+        </div>
+
+        <div id="quiz-container">
+            <div class="progress">
+                <div class="progress-text">
+                    <span id="current-q">1</span> / <span id="total-q">10</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 10%"></div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <h2 class="question-title" id="question-text"></h2>
+                <div id="options-container"></div>
+                <div id="explanation-container"></div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn" id="validate-btn" onclick="validateAnswer()">Valider</button>
+                <button class="btn hidden" id="next-btn" onclick="nextQuestion()">Question suivante →</button>
+            </div>
+        </div>
+
+        <div id="results-container" class="results hidden">
+            <h2>🎊 Quiz terminé !</h2>
+            <div class="score" id="final-score">0/10</div>
+            <p id="result-message"></p>
+            <div class="btn-container" style="justify-content: center;">
+                <button class="btn" onclick="location.reload()">🔀 Nouvelles questions</button>
+                <a href="index.html" class="btn" style="text-decoration: none; display: inline-block;">Changer de matière</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [{"q": "Devise de la France", "o": ["Travail, Famille, Patrie", "Liberté, Égalité, Fraternité", "Honneur et Patrie", "Justice et Vérité"], "c": 1, "e": "Liberté, Égalité, Fraternité."}, {"q": "Qu'est-ce que la laïcité ?", "o": ["Religion obligatoire", "Interdiction religion", "Séparation État/religions", "Religion d'État"], "c": 2, "e": "La laïcité sépare État et religions."}, {"q": "Âge pour voter en France", "o": ["16 ans", "17 ans", "18 ans", "21 ans"], "c": 2, "e": "18 ans depuis 1974."}, {"q": "Durée du mandat présidentiel", "o": ["3 ans", "5 ans", "7 ans", "10 ans"], "c": 1, "e": "5 ans (quinquennat)."}, {"q": "Rôle principal du Parlement", "o": ["Juger", "Voter les lois", "Exécuter lois", "Représenter France"], "c": 1, "e": "Le Parlement vote les lois."}, {"q": "Hymne national français", "o": ["La Marseillaise", "Chant des Partisans", "Carmagnole", "Ça ira"], "c": 0, "e": "La Marseillaise."}, {"q": "Loi de séparation Église/État", "o": ["1789", "1881", "1905", "1946"], "c": 2, "e": "Loi de 1905."}, {"q": "Qu'est-ce que le suffrage universel ?", "o": ["Vote hommes", "Vote tous citoyens majeurs", "Vote députés", "Vote sénateurs"], "c": 1, "e": "Tous les citoyens majeurs peuvent voter."}, {"q": "Qu'est-ce que la liberté d'expression ?", "o": ["Tout dire sans limite", "S'exprimer dans respect loi", "Parler en public", "Écrire journaux"], "c": 1, "e": "Liberté limitée par le respect et la loi."}, {"q": "Un devoir du citoyen", "o": ["Voter", "Payer impôts", "Manifester", "Critiquer gouvernement"], "c": 1, "e": "Payer ses impôts = obligation."}, {"q": "Pays membres de l'UE", "o": ["25", "27", "28", "30"], "c": 1, "e": "27 pays depuis le Brexit."}, {"q": "Monnaie européenne", "o": ["Franc", "Euro", "Livre", "Dollar"], "c": 1, "e": "L'euro."}, {"q": "Organisation pour maintenir la paix", "o": ["ONU", "OTAN", "UE", "FMI"], "c": 0, "e": "L'ONU."}, {"q": "Depuis quand les femmes votent en France ?", "o": ["1789", "1848", "1944", "1974"], "c": 2, "e": "1944."}, {"q": "Qu'est-ce que la discrimination ?", "o": ["Traiter différemment injustement", "Avoir opinions différentes", "Respecter différences", "Voter"], "c": 0, "e": "Discrimination = différence de traitement injuste."}];
+
+        let selectedQuestions = [];
+        let currentIndex = 0;
+        let selectedAnswer = null;
+        let score = 0;
+        let correctCount = 0;
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function init() {
+            selectedQuestions = shuffle([...questions]).slice(0, 10);
+            loadQuestion();
+            updateScore();
+        }
+
+        function loadQuestion() {
+            const q = selectedQuestions[currentIndex];
+            document.getElementById('question-text').textContent = q.q;
+            document.getElementById('current-q').textContent = currentIndex + 1;
+            document.getElementById('progress-fill').style.width = ((currentIndex + 1) / 10 * 100) + '%';
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.o.forEach((option, i) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + i)}</div>
+                    <div>${option}</div>
+                `;
+                div.onclick = () => selectOption(i, div);
+                container.appendChild(div);
+            });
+            
+            document.getElementById('explanation-container').innerHTML = '';
+            document.getElementById('validate-btn').classList.remove('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+            selectedAnswer = null;
+        }
+
+        function selectOption(index, element) {
+            if (selectedAnswer !== null) return;
+            
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswer = index;
+        }
+
+        function validateAnswer() {
+            if (selectedAnswer === null) {
+                alert('Sélectionne une réponse !');
+                return;
+            }
+            
+            const q = selectedQuestions[currentIndex];
+            const options = document.querySelectorAll('.option');
+            const isCorrect = selectedAnswer === q.c;
+            
+            options[q.c].classList.add('correct');
+            if (!isCorrect) {
+                options[selectedAnswer].classList.add('incorrect');
+            } else {
+                score += 10;
+                correctCount++;
+                updateScore();
+            }
+            
+            const expContainer = document.getElementById('explanation-container');
+            expContainer.innerHTML = `
+                <div class="explanation">
+                    <div class="explanation-title">
+                        <span>${isCorrect ? '🎉 Bravo !' : '💡 Pas tout à fait...'}</span>
+                    </div>
+                    <div class="explanation-text">${q.e}</div>
+                </div>
+            `;
+            
+            document.getElementById('validate-btn').classList.add('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIndex < 9) {
+                currentIndex++;
+                selectedAnswer = null;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+            
+            document.getElementById('final-score').textContent = correctCount + '/10';
+            
+            const messages = [
+                { min: 10, msg: 'Parfait ! 🌟' },
+                { min: 7, msg: 'Très bien ! 👏' },
+                { min: 5, msg: 'Pas mal ! 👍' },
+                { min: 0, msg: 'Continue à t\'entraîner ! 💪' }
+            ];
+            
+            const message = messages.find(m => correctCount >= m.min).msg;
+            document.getElementById('result-message').textContent = message + ` Tu as gagné ${score} points !`;
+            
+            const totalScore = parseInt(localStorage.getItem('totalScore') || '0');
+            localStorage.setItem('totalScore', totalScore + score);
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score + ' pts';
+        }
+
+        init();
+    </script>
+</body>
+</html>
