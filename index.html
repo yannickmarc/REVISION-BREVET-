@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Révision Brevet 2026</title>
+    <title>Révision Brevet 2026 - Plan Personnalisé</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -13,14 +13,14 @@
             padding: 20px;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
-        header {
+        .header {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 25px;
+            padding: 40px;
             margin-bottom: 40px;
             text-align: center;
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -28,208 +28,408 @@
         h1 {
             color: white;
             font-size: 3em;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
         .subtitle {
             color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2em;
+            font-size: 1.3em;
         }
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
         }
         .stat-card {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 25px;
             border: 2px solid rgba(255, 255, 255, 0.3);
             text-align: center;
         }
-        .stat-card h3 {
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
             color: white;
-            font-size: 2.5em;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
-        .stat-card p {
+        .stat-label {
             color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
         }
-        .subjects {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        .subject-card {
+        .config-section {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 25px;
             padding: 40px;
-            text-decoration: none;
+            margin-bottom: 30px;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            animation: slideUp 0.6s ease-out;
         }
-        .subject-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            background: rgba(255, 255, 255, 0.25);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        .icon {
-            font-size: 4em;
-            margin-bottom: 15px;
-            display: block;
-        }
-        .subject-card h2 {
+        .config-section h2 {
             color: white;
-            font-size: 1.8em;
-            margin-bottom: 10px;
-        }
-        .subject-card p {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 0.95em;
-            margin-bottom: 15px;
-        }
-        .question-count {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9em;
+            font-size: 2em;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 5px;
+            gap: 15px;
         }
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .option-group {
+            margin-bottom: 35px;
         }
-        .info-box {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
+        .option-label {
+            color: white;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .option-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 15px 30px;
             border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .option-btn.selected {
+            background: white;
+            color: #667eea;
+            border-color: white;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+        }
+        .discipline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .discipline-card {
+            background: rgba(255, 255, 255, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
             padding: 25px;
-            margin-top: 40px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
             text-align: center;
         }
-        .info-box h3 {
-            color: white;
+        .discipline-card:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        .discipline-card.selected {
+            background: white;
+            border-color: white;
+            box-shadow: 0 5px 25px rgba(255, 255, 255, 0.4);
+        }
+        .discipline-card.selected .discipline-name {
+            color: #667eea;
+        }
+        .discipline-card.selected .discipline-count {
+            color: #764ba2;
+        }
+        .discipline-icon {
+            font-size: 3.5em;
             margin-bottom: 15px;
+        }
+        .discipline-name {
+            color: white;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .discipline-count {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95em;
+        }
+        .start-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 20px 60px;
+            border-radius: 20px;
             font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 40px auto 0;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+        .start-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
         .info-box p {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.95);
             line-height: 1.6;
+            font-size: 1.05em;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
+        <div class="header">
             <h1>🏆 Révision Brevet 2026</h1>
-            <p class="subtitle">Prépare ton brevet avec des quiz interactifs !</p>
-        </header>
+            <p class="subtitle">Crée ton plan de révision personnalisé !</p>
+        </div>
 
         <div class="stats">
             <div class="stat-card">
-                <h3 id="total-score">0</h3>
-                <p>Points totaux</p>
+                <div class="stat-number">1000</div>
+                <div class="stat-label">Questions disponibles</div>
             </div>
             <div class="stat-card">
-                <h3>6</h3>
-                <p>Matières disponibles</p>
+                <div class="stat-number">6</div>
+                <div class="stat-label">Disciplines</div>
             </div>
             <div class="stat-card">
-                <h3>90</h3>
-                <p>Questions au total</p>
+                <div class="stat-number" id="total-score">0</div>
+                <div class="stat-label">Points totaux</div>
             </div>
         </div>
 
-        <div class="subjects">
-            <a href="francais.html" class="subject-card" style="animation-delay: 0s">
-                <span class="icon">📚</span>
-                <h2>Français</h2>
-                <p>Grammaire, conjugaison, littérature</p>
-                <div class="question-count">
-                    <span>🎯</span>
-                    <span>15 questions disponibles</span>
+        <!-- Étape 1 : Nombre de questions -->
+        <div class="config-section">
+            <h2>📊 Nombre de questions</h2>
+            <div class="option-group">
+                <div class="option-label">Combien de questions veux-tu ?</div>
+                <div class="button-group">
+                    <button class="option-btn" onclick="selectQuestionCount(20)">20 questions</button>
+                    <button class="option-btn" onclick="selectQuestionCount(30)">30 questions</button>
+                    <button class="option-btn" onclick="selectQuestionCount(40)">40 questions</button>
                 </div>
-            </a>
-
-            <a href="maths.html" class="subject-card" style="animation-delay: 0.1s">
-                <span class="icon">🔢</span>
-                <h2>Mathématiques</h2>
-                <p>Calcul, géométrie, algèbre</p>
-                <div class="question-count">
-                    <span>🎯</span>
-                    <span>15 questions disponibles</span>
-                </div>
-            </a>
-
-            <a href="histoire-geo.html" class="subject-card" style="animation-delay: 0.2s">
-                <span class="icon">🌍</span>
-                <h2>Histoire-Géo</h2>
-                <p>Histoire et géographie du monde</p>
-                <div class="question-count">
-                    <span>🎯</span>
-                    <span>15 questions disponibles</span>
-                </div>
-            </a>
-
-            <a href="sciences.html" class="subject-card" style="animation-delay: 0.3s">
-                <span class="icon">🧪</span>
-                <h2>Sciences</h2>
-                <p>SVT, Physique-Chimie, Technologie</p>
-                <div class="question-count">
-                    <span>🎯</span>
-                    <span>15 questions disponibles</span>
-                </div>
-            </a>
-
-            <a href="anglais.html" class="subject-card" style="animation-delay: 0.4s">
-                <span class="icon">🗣️</span>
-                <h2>Anglais</h2>
-                <p>Vocabulaire, grammaire, compréhension</p>
-                <div class="question-count">
-                    <span>🎯</span>
-                    <span>15 questions disponibles</span>
-                </div>
-            </a>
-
-            <a href="emc.html" class="subject-card" style="animation-delay: 0.5s">
-                <span class="icon">🧠</span>
-                <h2>EMC</h2>
-                <p>Enseignement moral et civique</p>
-                <div class="question-count">
-                    <span>🎯</span>
-                    <span>15 questions disponibles</span>
-                </div>
-            </a>
+            </div>
         </div>
 
-        <div class="info-box">
-            <h3>🎲 Comment ça marche ?</h3>
-            <p>
-                Choisis une matière ci-dessus pour commencer ! 
-                Chaque quiz contient 10 questions tirées aléatoirement.
-                Tu gagnes 10 points par bonne réponse. Bon courage ! 🌟
-            </p>
+        <!-- Étape 2 : Mode de sélection -->
+        <div class="config-section">
+            <h2>🎲 Choix des disciplines</h2>
+            <div class="option-group">
+                <div class="option-label">Comment veux-tu choisir tes disciplines ?</div>
+                <div class="button-group">
+                    <button class="option-btn" onclick="selectMode('manual')">
+                        Je choisis mes disciplines
+                    </button>
+                    <button class="option-btn" onclick="selectMode('random')">
+                        Au hasard !
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mode manuel : sélection disciplines -->
+            <div id="manual-selection" class="hidden" style="margin-top: 30px;">
+                <div class="option-label">Sélectionne 1 à 6 disciplines :</div>
+                <div class="discipline-grid">
+                    <div class="discipline-card" onclick="toggleDiscipline('francais')">
+                        <div class="discipline-icon">📚</div>
+                        <div class="discipline-name">Français</div>
+                        <div class="discipline-count">~167 questions</div>
+                    </div>
+                    <div class="discipline-card" onclick="toggleDiscipline('maths')">
+                        <div class="discipline-icon">🔢</div>
+                        <div class="discipline-name">Mathématiques</div>
+                        <div class="discipline-count">~167 questions</div>
+                    </div>
+                    <div class="discipline-card" onclick="toggleDiscipline('histoire-geo')">
+                        <div class="discipline-icon">🌍</div>
+                        <div class="discipline-name">Histoire-Géo</div>
+                        <div class="discipline-count">~167 questions</div>
+                    </div>
+                    <div class="discipline-card" onclick="toggleDiscipline('sciences')">
+                        <div class="discipline-icon">🧪</div>
+                        <div class="discipline-name">Sciences</div>
+                        <div class="discipline-count">~167 questions</div>
+                    </div>
+                    <div class="discipline-card" onclick="toggleDiscipline('anglais')">
+                        <div class="discipline-icon">🗣️</div>
+                        <div class="discipline-name">Anglais</div>
+                        <div class="discipline-count">~167 questions</div>
+                    </div>
+                    <div class="discipline-card" onclick="toggleDiscipline('emc')">
+                        <div class="discipline-icon">🧠</div>
+                        <div class="discipline-name">EMC</div>
+                        <div class="discipline-count">~167 questions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mode aléatoire : nombre de disciplines -->
+            <div id="random-selection" class="hidden" style="margin-top: 30px;">
+                <div class="option-label">Combien de disciplines au hasard ?</div>
+                <div class="button-group">
+                    <button class="option-btn" onclick="selectRandomCount(1)">1 discipline</button>
+                    <button class="option-btn" onclick="selectRandomCount(2)">2 disciplines</button>
+                    <button class="option-btn" onclick="selectRandomCount(3)">3 disciplines</button>
+                    <button class="option-btn" onclick="selectRandomCount(4)">4 disciplines</button>
+                    <button class="option-btn" onclick="selectRandomCount(5)">5 disciplines</button>
+                    <button class="option-btn" onclick="selectRandomCount(6)">6 disciplines</button>
+                </div>
+            </div>
+
+            <div class="info-box" id="selection-info" class="hidden">
+                <p id="info-text"></p>
+            </div>
         </div>
+
+        <button class="start-btn" id="start-btn" onclick="startQuiz()" disabled>
+            🚀 Commencer la révision
+        </button>
     </div>
 
     <script>
-        // Charger le score total depuis localStorage
-        const score = localStorage.getItem('totalScore') || 0;
-        document.getElementById('total-score').textContent = score;
+        let config = {
+            questionCount: null,
+            mode: null,
+            disciplines: [],
+            randomCount: null
+        };
+
+        // Charger le score total
+        document.getElementById('total-score').textContent = 
+            localStorage.getItem('totalScore') || 0;
+
+        function selectQuestionCount(count) {
+            config.questionCount = count;
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                if (btn.textContent.includes(count + ' questions')) {
+                    btn.classList.add('selected');
+                } else if (btn.textContent.includes('questions')) {
+                    btn.classList.remove('selected');
+                }
+            });
+            updateStartButton();
+        }
+
+        function selectMode(mode) {
+            config.mode = mode;
+            config.disciplines = [];
+            config.randomCount = null;
+
+            // Reset buttons
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                if (btn.textContent.includes('choisis') || btn.textContent.includes('hasard')) {
+                    btn.classList.remove('selected');
+                }
+            });
+
+            // Highlight selected mode
+            event.target.classList.add('selected');
+
+            // Show/hide appropriate section
+            if (mode === 'manual') {
+                document.getElementById('manual-selection').classList.remove('hidden');
+                document.getElementById('random-selection').classList.add('hidden');
+                document.getElementById('selection-info').classList.add('hidden');
+            } else {
+                document.getElementById('manual-selection').classList.add('hidden');
+                document.getElementById('random-selection').classList.remove('hidden');
+                document.getElementById('selection-info').classList.add('hidden');
+            }
+
+            updateStartButton();
+        }
+
+        function toggleDiscipline(disciplineId) {
+            const index = config.disciplines.indexOf(disciplineId);
+            const card = event.currentTarget;
+
+            if (index > -1) {
+                config.disciplines.splice(index, 1);
+                card.classList.remove('selected');
+            } else {
+                config.disciplines.push(disciplineId);
+                card.classList.add('selected');
+            }
+
+            updateInfo();
+            updateStartButton();
+        }
+
+        function selectRandomCount(count) {
+            config.randomCount = count;
+            
+            document.querySelectorAll('#random-selection .option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+
+            updateInfo();
+            updateStartButton();
+        }
+
+        function updateInfo() {
+            const infoBox = document.getElementById('selection-info');
+            const infoText = document.getElementById('info-text');
+
+            if (config.mode === 'manual' && config.disciplines.length > 0) {
+                infoBox.classList.remove('hidden');
+                const names = {
+                    'francais': 'Français',
+                    'maths': 'Mathématiques',
+                    'histoire-geo': 'Histoire-Géographie',
+                    'sciences': 'Sciences',
+                    'anglais': 'Anglais',
+                    'emc': 'EMC'
+                };
+                const selected = config.disciplines.map(d => names[d]).join(', ');
+                infoText.textContent = `✓ ${config.disciplines.length} discipline(s) sélectionnée(s) : ${selected}`;
+            } else if (config.mode === 'random' && config.randomCount) {
+                infoBox.classList.remove('hidden');
+                infoText.textContent = `✓ ${config.randomCount} discipline(s) seront tirée(s) au hasard`;
+            } else {
+                infoBox.classList.add('hidden');
+            }
+        }
+
+        function updateStartButton() {
+            const btn = document.getElementById('start-btn');
+            let isValid = false;
+
+            if (config.questionCount && config.mode) {
+                if (config.mode === 'manual') {
+                    isValid = config.disciplines.length > 0;
+                } else {
+                    isValid = config.randomCount !== null;
+                }
+            }
+
+            btn.disabled = !isValid;
+        }
+
+        function startQuiz() {
+            // Sauvegarder la configuration
+            localStorage.setItem('quizConfig', JSON.stringify(config));
+            // Rediriger vers le quiz
+            window.location.href = 'quiz.html';
+        }
     </script>
 </body>
 </html>
